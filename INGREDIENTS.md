@@ -92,13 +92,15 @@ universal app. Its public key is the family's, in `updater/ed25519_key.pub`.
 
 ## Declared state
 
+Not ingredients: the build scripts and `patches/` are this repo's own recipe. A change there is a
+repackage cut deliberately (`workflow_dispatch` with `local_release=true`).
+
 - upstream: UPSTREAM_VERSION
 - cctools-port: components/cctools-port/version
 - cctools-port-sha256: components/cctools-port/sha256
 - clang22: components/clang22/version
 - make: components/make/version
 - libdispatch: components/libdispatch/version
-- patches: patches
 
 ## Conformance deviations
 
