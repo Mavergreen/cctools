@@ -1,5 +1,8 @@
 # cctools for Mavericks
 
+**This README has not been read or edited by a human yet.** Until it has, this project cannot cut
+its first release.
+
 Apple's cctools 1035.1.102 and ld64 957.1 (`ld`, `as`, `ar`, `lipo`, `otool`, `nm`, `libtool`, `strip`,
 `install_name_tool`, `codesign_allocate` and the rest), built to run on Mac OS X 10.9 Mavericks, on a modern
 Mac, and on x86_64 Linux. They need no Command Line Tools.
