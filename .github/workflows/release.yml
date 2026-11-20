@@ -84,11 +84,11 @@ jobs:
         run: |
           set -eu
           mkdir -p "$RUNNER_TEMP/work/home" dist
-          docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/src" -v "$SHIPYARD_SCRIPTS:/shipyard:ro" -v "$RUNNER_TEMP/work:/work" -w /src \
-            -e SHIPYARD_SCRIPTS=/shipyard -e MAVERICKS_BUILD_ROOT=/work/mm-build -e HOME=/work/home -e V \
+          docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/src" -v "$MavericksShipyard_DIR:/shipyard:ro" -v "$RUNNER_TEMP/work:/work" -w /src \
+            -e SHIPYARD_SCRIPTS=/shipyard/scripts -e MavericksShipyard_DIR=/shipyard -e MAVERICKS_BUILD_ROOT=/work/mm-build -e HOME=/work/home -e V \
             -e SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)" \
             -e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e GIT_CONFIG_VALUE_0=/src \
-            cctools-build sh -c 'sh build/build-release.sh --version "$V" --out /src/dist && CCT_STAGE=/work/mm-build/cctools/release/stage-linux sh /shipyard/run-repo-tests.sh --strict-host'
+            cctools-build sh -c 'sh build/build-release.sh --version "$V" --out /src/dist && CCT_STAGE=/work/mm-build/cctools/release/stage-linux sh /shipyard/scripts/run-repo-tests.sh --strict-host'
       - name: Ingredient pins are well declared
         run: sh "$SHIPYARD_SCRIPTS/check-ingredient-pins.sh"
       - name: Attach the source the builds verified, so the APSL source offer outlives cctools-port's repository

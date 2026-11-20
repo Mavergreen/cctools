@@ -30,7 +30,7 @@ work="$(mktemp -d "$(cct_build_root)/updater.XXXXXX")"
 trap 'rm -rf "$work"' EXIT
 for s in $slices; do
   a="${s%%:*}"; floor="${s#*:}"
-  "$sc" -S "$MAVERICKS_ROOT" -B "$work/$a" -DCMAKE_TOOLCHAIN_FILE="$tc" -DCMAKE_OSX_ARCHITECTURES="$a" \
+  "$sc" -S "$MAVERICKS_ROOT" -B "$work/$a" -DCMAKE_TOOLCHAIN_FILE="$tc" ${MavericksShipyard_DIR:+-DMavericksShipyard_DIR="$MavericksShipyard_DIR"} -DCMAKE_OSX_ARCHITECTURES="$a" \
     -DCMAKE_OBJC_COMPILER="$CLANG22_BIN/clang" -DCMAKE_OBJC_COMPILER_TARGET="$a-apple-macos$floor" \
     -DCMAKE_OBJC_FLAGS=--no-default-config \
     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld --ld-path=$CLANG22_BIN/ld64.lld" >&2 || die "the $a updater did not configure"
