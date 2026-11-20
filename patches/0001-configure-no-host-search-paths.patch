@@ -1,0 +1,32 @@
+diff -ru a0/cctools/configure b/cctools/configure
+--- a0/cctools/configure	2026-11-08 11:21:27.000000000 -0500
++++ b/cctools/configure	2026-11-20 02:01:47.000000000 -0500
+@@ -3037,12 +3037,6 @@
+ 
+ CXXFLAGS="$CXXFLAGS -std=c++2a"
+ 
+-if test "x$build" = "x$host"; then
+-  CFLAGS="$CFLAGS -isystem /usr/local/include -isystem /usr/pkg/include"
+-  CXXFLAGS="$CXXFLAGS -isystem /usr/local/include -isystem /usr/pkg/include"
+-  LDFLAGS="$LDFLAGS -L/usr/local/lib -L/usr/pkg/lib"
+-fi
+-
+ CWARNINGS=""
+ CXXWARNINGS=""
+ EXTRAFLAGS=""
+diff -ru a0/cctools/configure.ac b/cctools/configure.ac
+--- a0/cctools/configure.ac	2026-11-08 11:21:27.000000000 -0500
++++ b/cctools/configure.ac	2026-11-20 02:01:47.000000000 -0500
+@@ -24,12 +24,6 @@
+ 
+ CXXFLAGS="$CXXFLAGS -std=c++2a"
+ 
+-if test "x$build" = "x$host"; then
+-  CFLAGS="$CFLAGS -isystem /usr/local/include -isystem /usr/pkg/include"
+-  CXXFLAGS="$CXXFLAGS -isystem /usr/local/include -isystem /usr/pkg/include"
+-  LDFLAGS="$LDFLAGS -L/usr/local/lib -L/usr/pkg/lib"
+-fi
+-
+ CWARNINGS=""
+ CXXWARNINGS=""
+ EXTRAFLAGS=""

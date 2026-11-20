@@ -1,0 +1,22 @@
+diff -ru b/cctools/ld64/src/ld/Options.cpp c/cctools/ld64/src/ld/Options.cpp
+--- b/cctools/ld64/src/ld/Options.cpp	2026-11-20 02:01:47.000000000 -0500
++++ c/cctools/ld64/src/ld/Options.cpp	2026-11-20 02:02:06.000000000 -0500
+@@ -20,6 +20,9 @@
+  * limitations under the License.
+  *
+  * @APPLE_LICENSE_HEADER_END@
++ *
++ * Modified 2026-11-20 by Mavergreen (https://github.com/Mavergreen/cctools): `ld -v` names
++ * where this modified source is available, in place of the time it was built.
+  */
+ 
+ 
+@@ -4500,7 +4503,7 @@
+ 			fVerbose = true;
+ 			extern const char ld_classicVersionString[];
+ 			fprintf(stderr, "%s", ld_classicVersionString);
+-			fprintf(stderr, "BUILD "  __TIME__ " "  __DATE__"\n");
++			fprintf(stderr, "Mavergreen cctools: modified source available at https://github.com/Mavergreen/cctools\n");
+ 			fprintf(stderr, "configured to support archs: %s\n", ALL_SUPPORTED_ARCHS);
+ 			 // if only -v specified, exit cleanly
+ 			 if ( argc == 2 ) {
