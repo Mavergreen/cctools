@@ -58,11 +58,10 @@
   ],
   "packageRules": [
     {
-      "description": "Each of these moves a pin Renovate cannot write: GitHub's tarball SHA-256 in components/<name>/sha256, or clang22's Linux archive digest in components/clang22/linux-sha256. Until a pins bot writes them (.superpowers/QUEUE.md), the build fails at the fetch, naming the digest it got; write it on the branch by hand.",
+      "description": "Each of these moves a pin Renovate cannot write: GitHub's tarball SHA-256 in components/<name>/sha256. Until a pins bot writes them (.superpowers/QUEUE.md), the build fails at the fetch, naming the digest it got; write it on the branch by hand.",
       "matchDepNames": [
         "cctools-port",
-        "swift-corelibs-libdispatch",
-        "Mavergreen/clang-22"
+        "swift-corelibs-libdispatch"
       ],
       "automerge": false
     },

@@ -7,15 +7,15 @@ An *ingredient* is an input to the product; the *own upstream* is the thing this
 |---|---|---|---|
 | Apple's cctools 1035.1.102 and ld64 957.1 (own upstream) | `UPSTREAM_VERSION` | none: ld64 957.1 is the last Apple published, so no newer one will come | a new cctools version would cut `-mavericks.1` |
 | cctools-port, the portable tree of that cctools and ld64 | `components/cctools-port/version` (branch and commit), with GitHub's tarball SHA-256 in `components/cctools-port/sha256` | ✅ `git-refs` on the branch moves the commit; the SHA-256 moves by hand (see below) | repackage → `-mavericks.(N+1)` |
-| clang22 (the compiler on every host) | `components/clang22/version`, with its Linux archive's digest in `components/clang22/linux-sha256` | ✅ `github-releases` on `Mavergreen/clang-22`; the digest moves by hand | repackage |
+| clang22 (the compiler on every host) | `components/clang22/version`; its Linux archive is verified against that release's `SHA256SUMS` | ✅ `github-releases` on `Mavergreen/clang-22`, automerged | repackage |
 | Recaulk (headers and `librecaulk.a`, through clang22's cfgs, x86_64 only) | inside the pinned clang22 | moves with clang22 | repackage |
 | GNU Make (runs the Mac build; 10.9 has none without the Command Line Tools) | `components/make/version` | ✅ `github-releases` on `Mavergreen/make` | repackage |
 | swift-corelibs-libdispatch, with its BlocksRuntime (linked statically into the Linux tools) | `components/libdispatch/version` (tag and commit), with its tarball SHA-256 in `components/libdispatch/sha256` | ✅ `github-tags`, capped below 6.3, which needs CMake 3.26 (the container has 3.22); the SHA-256 moves by hand | repackage |
 | MacOSX10.9 and 11.3 SDKs, Sparkle framework | `Mavergreen/shipyard@v1` | ✅ github-actions manager tracks the tag | `@v1` is a moving tag, so content moves without a path changing |
 | The Linux build container (Ubuntu 22.04 and its packages) | `build/linux/base-image`, `apt-snapshot`, `packages.lock` (clang-22's, copied) | none; moved by hand, with clang-22's | repackage |
 
-**Digests Renovate cannot write.** A bump of cctools-port, libdispatch or clang22 fails its build at
-the fetch, naming the digest it got, until someone writes it on the branch, so those three never
+**Digests Renovate cannot write.** A bump of cctools-port or libdispatch fails its build at
+the fetch, naming the digest it got, until someone writes it on the branch, so those two never
 automerge. A pins bot would write them (`.superpowers/QUEUE.md`); every repo that has one keeps its
 own copy today, and shipyard should own one instead.
 
