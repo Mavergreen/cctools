@@ -65,6 +65,13 @@
         "Mavergreen/clang-22"
       ],
       "automerge": false
+    },
+    {
+      "description": "swift-corelibs-libdispatch 6.3 and later need CMake 3.26, and the locked Linux container has Ubuntu 22.04's 3.22. Lift this cap when the container gets a newer CMake.",
+      "matchDepNames": [
+        "swift-corelibs-libdispatch"
+      ],
+      "allowedVersions": "<6.3"
     }
   ]
 }

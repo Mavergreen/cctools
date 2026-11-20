@@ -10,7 +10,7 @@ An *ingredient* is an input to the product; the *own upstream* is the thing this
 | clang22 (the compiler on every host) | `components/clang22/version`, with its Linux archive's digest in `components/clang22/linux-sha256` | ✅ `github-releases` on `Mavergreen/clang-22`; the digest moves by hand | repackage |
 | Recaulk (headers and `librecaulk.a`, through clang22's cfgs, x86_64 only) | inside the pinned clang22 | moves with clang22 | repackage |
 | GNU Make (runs the Mac build; 10.9 has none without the Command Line Tools) | `components/make/version` | ✅ `github-releases` on `Mavergreen/make` | repackage |
-| swift-corelibs-libdispatch, with its BlocksRuntime (linked statically into the Linux tools) | `components/libdispatch/version` (tag and commit), with its tarball SHA-256 in `components/libdispatch/sha256` | ✅ `github-tags`; the SHA-256 moves by hand | repackage |
+| swift-corelibs-libdispatch, with its BlocksRuntime (linked statically into the Linux tools) | `components/libdispatch/version` (tag and commit), with its tarball SHA-256 in `components/libdispatch/sha256` | ✅ `github-tags`, capped below 6.3, which needs CMake 3.26 (the container has 3.22); the SHA-256 moves by hand | repackage |
 | MacOSX10.9 and 11.3 SDKs, Sparkle framework | `Mavergreen/shipyard@v1` | ✅ github-actions manager tracks the tag | `@v1` is a moving tag, so content moves without a path changing |
 | The Linux build container (Ubuntu 22.04 and its packages) | `build/linux/base-image`, `apt-snapshot`, `packages.lock` (clang-22's, copied) | none; moved by hand, with clang-22's | repackage |
 
