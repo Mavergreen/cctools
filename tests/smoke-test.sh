@@ -35,7 +35,7 @@ otool_="${OTOOL:-$T/bin/otool}"
 if [ -d "$CCT_STAGE/usr/local/mavergreen/cctools" ]; then
   for f in "$T"/bin/*; do
     [ -L "$f" ] && continue
-    "$otool_" -L "$f" | tail -n +2 | awk '{ print $1 }' > "$w/deps"
+    "$otool_" -L "$f" | awk '/^\t/ { print $1 }' > "$w/deps"
     if grep -v -e '^/usr/lib/' -e '^/System/Library/' "$w/deps"; then fail "${f##*/} loads from outside the OS"; fi
   done
 fi
