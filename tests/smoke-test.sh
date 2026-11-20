@@ -7,7 +7,7 @@
 #          run here: `ld -v` names the source, and ld -kext turns tests/fixtures/kext/hello.o into a
 #          kext with only the load commands 10.9's kxld accepts (tests/kext-load-test.sh loads it).
 #          as, which hands the assembly to a clang, assembles hello.s too where one is at hand:
-#          CCTOOLS_CLANG_AS_EXECUTABLE, or a clang on PATH. Exit 77, after the static half, when they
+#          CCTOOLS_CLANG_AS_EXECUTABLE, or a clang on PATH that runs. Exit 77, after the static half, when they
 #          cannot run here; 77 alone when CCT_STAGE is unset.
 set -eu
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -45,7 +45,8 @@ echo "PASS static: $T"
 grep -q 'PROJECT:ld64-957.1' "$w/v" || { cat "$w/v"; fail "ld -v names no ld64-957.1"; }
 grep -q 'source available at https://github.com/Mavergreen/cctools' "$w/v" || { cat "$w/v"; fail "ld -v names no source"; }
 did_as=""
-if [ -n "${CCTOOLS_CLANG_AS_EXECUTABLE:-}" ] || command -v clang > /dev/null 2>&1; then
+# platform: 10.9 without the Command Line Tools has /usr/bin/clang, a stub that only offers to install them
+if "${CCTOOLS_CLANG_AS_EXECUTABLE:-clang}" --version > /dev/null 2>&1; then
   "$T/bin/as" -arch x86_64 "$HERE/fixtures/kext/hello.s" -o "$w/as.o" || fail "as could not assemble the kext fixture"
   "$otool_" -hv "$w/as.o" | grep -q OBJECT || fail "as made no object"
   did_as="as, "
