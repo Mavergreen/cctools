@@ -39,7 +39,8 @@ clang-22's locked Ubuntu 22.04 container, through `build/build-release.sh`, and 
 - **Changes:** `patches/`, applied in name order by shipyard's `apply_patches.sh`.
   `0001` stops `configure` from searching `/usr/local` and `/usr/pkg` on a native build, so a box's
   own libraries never reach the tools. `0002` makes `ld -v` say where the modified source is, as the
-  APSL asks, in place of the time of the build. A changed APSL file says so, with the date, in its
+  APSL asks, in place of the time of the build. `patches/libdispatch/` keeps libdispatch's warnings from
+  being errors: upstream builds with `-Werror`, and clang22 warns where upstream's compiler does not. A changed APSL file says so, with the date, in its
   licence header.
 - **Off:** libtapi (the 10.9 SDK has no `.tbd` stubs to read), LTO (there is no libLTO to load) and
   so xar and llvm-config.
@@ -51,7 +52,8 @@ clang-22's locked Ubuntu 22.04 container, through `build/build-release.sh`, and 
   no AArch64 backend.
 - **Linux, x86_64:** in clang-22's locked Ubuntu 22.04 container, with clang22 and lld, against
   libdispatch and BlocksRuntime that `build/build-libdispatch.sh` builds statically, so the archive
-  needs no library beside it. The tools run on the container's glibc 2.35 or later.
+  needs no library beside it. The tools run on the container's glibc 2.35 or later. Its Apache licence
+  ships beside the tools as `share/doc/cctools/LICENSE.libdispatch`.
 - **Guarded:** shipyard's compat guard runs over every binary of both Mac slices before the build exits 0.
 - **Staged:** under `/usr/local/mavergreen/cctools` on a Mac and `/opt/mavergreen/cctools` on Linux:
   `bin/` (ld, as, ar, lipo, otool, nm, libtool, strip, install_name_tool, codesign_allocate and the

@@ -22,6 +22,8 @@ clang22="$(sh "$SHIPYARD_SCRIPTS/fetch_clang22.sh" "$root/components/clang22")" 
 pins="$root/components/libdispatch"
 sh "$SHIPYARD_SCRIPTS/fetch_pinned_source.sh" https://github.com/swiftlang/swift-corelibs-libdispatch \
   "$(awk '{ print $2 }' "$pins/version")" "$(tr -d '[:space:]' < "$pins/sha256")" "$work/src" >&2
+# spec: patches/libdispatch/ -- upstream builds with -Werror, and clang22 warns where the compiler upstream tests with does not
+sh "$SHIPYARD_SCRIPTS/apply_patches.sh" "$work/src" "$root/patches/libdispatch" >&2
 maps="-ffile-prefix-map=$work=. -ffile-prefix-map=$(cd -P "$work" && pwd)=."
 # platform: clang22 ships compiler-rt for Darwin only, so a Linux link takes the system's libgcc and libstdc++
 flags="--no-default-config --target=x86_64-unknown-linux-gnu -fuse-ld=lld --rtlib=libgcc --unwindlib=libgcc -stdlib=libstdc++ -Wno-unused-command-line-argument"
@@ -34,7 +36,9 @@ cmake -G Ninja -S "$work/src" -B "$work/obj" -DCMAKE_BUILD_TYPE=Release -DBUILD_
   || { tail -30 "$work/configure.log" >&2; die "configure failed"; }
 cmake --build "$work/obj" > "$work/build.log" 2>&1 || { tail -30 "$work/build.log" >&2; die "build failed"; }
 cmake --install "$work/obj" > /dev/null || die "install failed"
-for f in lib/libdispatch.a lib/libBlocksRuntime.a include/dispatch/dispatch.h include/Block.h; do
+mkdir -p "$prefix/share/doc/libdispatch"
+cp "$work/src/LICENSE" "$prefix/share/doc/libdispatch/LICENSE"
+for f in lib/libdispatch.a lib/libBlocksRuntime.a include/dispatch/dispatch.h include/Block.h share/doc/libdispatch/LICENSE; do
   [ -f "$prefix/$f" ] || die "the install has no $f"
 done
 rm -rf "$work"

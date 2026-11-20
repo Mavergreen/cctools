@@ -120,6 +120,8 @@ mkdir -p "$doc"
 cp "$src/cctools/APPLE_LICENSE" "$doc/APPLE_LICENSE"
 sh "$here/third-party-notices.sh" "$src/cctools" > "$doc/THIRD_PARTY_NOTICES"
 cp "$root/patches"/*.patch "$doc/"
+# spec: INGREDIENTS.md "How cctools is built" -- the Linux tools link libdispatch, whose Apache licence travels with them
+[ "$variant" != linux-x86_64 ] || cp "$LIBDISPATCH_PREFIX/share/doc/libdispatch/LICENSE" "$doc/LICENSE.libdispatch"
 chmod 644 "$doc"/*
 
 case "$variant" in mac-x86_64) garch=x86_64 ;; mac-arm64) garch=arm64 ;; *) garch="" ;; esac

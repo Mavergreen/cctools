@@ -1,0 +1,11 @@
+diff -ru a0/cmake/modules/DispatchCompilerWarnings.cmake b/cmake/modules/DispatchCompilerWarnings.cmake
+--- a0/cmake/modules/DispatchCompilerWarnings.cmake	2025-08-14 20:16:40.000000000 -0400
++++ b/cmake/modules/DispatchCompilerWarnings.cmake	2026-11-20 07:57:29.000000000 -0500
+@@ -6,7 +6,6 @@
+   # so that we can use __popcnt64
+   add_compile_options($<$<COMPILE_LANGUAGE:C,CXX>:-fms-extensions>)
+ else()
+-  add_compile_options($<$<COMPILE_LANGUAGE:C,CXX>:-Werror>)
+   add_compile_options($<$<COMPILE_LANGUAGE:C,CXX>:-Wall>)
+   add_compile_options($<$<COMPILE_LANGUAGE:C,CXX>:-Wextra>)
+ 
