@@ -1,5 +1,5 @@
-/* spec: tests/kext-test.sh -- a kext with no library: its kmod_info and _start/_stop are here, as
- *       libkmod.a would supply them, so the 10.9 VM links it from hello.s with no SDK. */
+/* spec: tests/kext-load-test.sh -- a kext with no library: its kmod_info and _start/_stop are here, as
+ *       libkmod.a would supply them, so the 10.9 VM links hello.o with no SDK. */
 #include <mach/mach_types.h>
 #include <libkern/libkern.h>
 kern_return_t hello_start(kmod_info_t *ki, void *d);

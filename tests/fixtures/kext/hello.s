@@ -1,6 +1,6 @@
-# spec: tests/kext-test.sh -- hello.c, compiled by clang22 22.1.8-mavericks.22 with -S -O2 -mkernel
-#       -fno-builtin -fno-ident against the 10.9 SDK's Kernel.framework headers; tests/kext-test.sh rebuilds it
-#       where clang22 is at hand and fails if it differs.
+# spec: tests/kext-fixture-test.sh -- hello.c, compiled by clang22 22.1.8-mavericks.22 with -S -O2 -mkernel
+#       -fno-builtin -fno-ident against the 10.9 SDK's Kernel.framework headers; tests/kext-fixture-test.sh
+#       rebuilds it, and hello.o with -c, and fails if either differs.
 	.macosx_version_min 10, 9
 	.section	__TEXT,__text,regular,pure_instructions
 	.globl	_hello_start                    ## -- Begin function hello_start
