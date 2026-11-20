@@ -74,7 +74,8 @@ case "$variant" in
     : "${LIBDISPATCH_PREFIX:?build/build-libdispatch.sh first, and name its prefix in LIBDISPATCH_PREFIX}"
     prefix=/opt/mavergreen/cctools; host=x86_64-unknown-linux-gnu
     # platform: clang22's cfgs target 10.9; a Linux build names its own target and leaves them off
-    flags="--no-default-config --target=$host -fuse-ld=lld"
+    # platform: clang22 ships compiler-rt for Darwin only, so a Linux link takes the system's libgcc and libstdc++
+    flags="--no-default-config --target=$host -fuse-ld=lld --rtlib=libgcc --unwindlib=libgcc -stdlib=libstdc++ -Wno-unused-command-line-argument"
     # platform: not --with-libdispatch, which adds an rpath naming this build's prefix; the libraries
     #           are static, so the tools need none
     cfg_cppflags="-isystem $LIBDISPATCH_PREFIX/include"; cfg_libs="-L$LIBDISPATCH_PREFIX/lib -lBlocksRuntime -lpthread"

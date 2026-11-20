@@ -23,7 +23,8 @@ pins="$root/components/libdispatch"
 sh "$SHIPYARD_SCRIPTS/fetch_pinned_source.sh" https://github.com/swiftlang/swift-corelibs-libdispatch \
   "$(awk '{ print $2 }' "$pins/version")" "$(tr -d '[:space:]' < "$pins/sha256")" "$work/src" >&2
 maps="-ffile-prefix-map=$work=. -ffile-prefix-map=$(cd -P "$work" && pwd)=."
-flags="--no-default-config --target=x86_64-unknown-linux-gnu -fuse-ld=lld"
+# platform: clang22 ships compiler-rt for Darwin only, so a Linux link takes the system's libgcc and libstdc++
+flags="--no-default-config --target=x86_64-unknown-linux-gnu -fuse-ld=lld --rtlib=libgcc --unwindlib=libgcc -stdlib=libstdc++ -Wno-unused-command-line-argument"
 # platform: no cmake product runs on Linux yet; this uses the container's, locked in build/linux/packages.lock
 cmake -G Ninja -S "$work/src" -B "$work/obj" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=NO \
   -DBUILD_TESTING=NO -DCMAKE_INSTALL_PREFIX="$prefix" -DCMAKE_INSTALL_LIBDIR=lib \
