@@ -27,6 +27,9 @@ so name the directory, or put it first, to be sure of getting these:
 
 A Sparkle updater keeps them current.
 
+`as`, like Apple's own since cctools 1010, hands the assembly to a clang: the first `clang` on `PATH`, or the
+one `CCTOOLS_CLANG_AS_EXECUTABLE` names (clang22's, say). The other tools need nothing beside them.
+
 ### On Linux
 
 ```sh

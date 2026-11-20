@@ -1,7 +1,7 @@
 #!/bin/sh
 # platform: macOS-only -- loads a kext into the running kernel; only on Mac OS X 10.9, and only as root
 #   usage: sudo CCT_STAGE=DIR sh tests/kext-load-test.sh
-#          Links tests/fixtures/kext/hello.s with the tree's as and ld -kext, bundles it, and has 10.9's
+#          Links tests/fixtures/kext/hello.o with the tree's ld -kext, bundles it, and has 10.9's
 #          kxld link it (kextutil -n -t), then loads it, finds it in kextstat and unloads it. Exit 77
 #          unless CCT_STAGE is set, the host is 10.9 and this runs as root: CI runs it in the
 #          throwaway 10.9 VM, and a person runs it on a box of their own only when they choose to.
@@ -17,8 +17,7 @@ w="$(mktemp -d /tmp/cct-kext.XXXXXX)"
 trap 'kextunload -b "$id" > /dev/null 2>&1 || true; rm -rf "$w"' EXIT
 k="$w/hello.kext/Contents"
 mkdir -p "$k/MacOS"
-"$T/bin/as" -arch x86_64 "$HERE/fixtures/kext/hello.s" -o "$w/hello.o"
-"$T/bin/ld" -arch x86_64 -kext -static -no_uuid -macosx_version_min 10.9 "$w/hello.o" -o "$k/MacOS/hello"
+"$T/bin/ld" -arch x86_64 -kext -static -no_uuid -macosx_version_min 10.9 "$HERE/fixtures/kext/hello.o" -o "$k/MacOS/hello"
 cp "$HERE/fixtures/kext/Info.plist" "$k/Info.plist"
 chown -R root:wheel "$w/hello.kext"
 chmod -R go-w "$w/hello.kext"

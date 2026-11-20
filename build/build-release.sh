@@ -23,6 +23,8 @@ smoke() { # STAGE WANT -- WANT 0: both halves pass; 77: the static half passes a
 }
 sh "$here/build-libdispatch.sh" "$b/libdispatch"
 LIBDISPATCH_PREFIX="$b/libdispatch" sh "$here/build-cctools.sh" --variant linux-x86_64 --stage "$b/stage-linux"
+# spec: tests/smoke-test.sh -- as hands the assembly to a clang, and clang22's is the one here
+CCTOOLS_CLANG_AS_EXECUTABLE="$CLANG22_BIN/clang"; export CCTOOLS_CLANG_AS_EXECUTABLE
 ( unset OTOOL; smoke "$b/stage-linux" 0 )
 for a in x86_64 arm64; do
   sh "$here/build-cctools.sh" --variant "mac-$a" --stage "$b/stage-$a"

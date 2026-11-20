@@ -4,9 +4,10 @@
 #          DIR holds the tree at its prefix (a stage, or / for an installed pkg or archive). Static half,
 #          on any host: the tools and licences are there, no file names the build host, and in a Mac tree
 #          every Mach-O loads only from /usr/lib and /System. Runtime half, where the tree's binaries
-#          run here: `ld -v` names the source, and as and ld -kext
-#          turn tests/fixtures/kext/hello.s into a kext with only the load commands 10.9's kxld
-#          accepts (tests/kext-load-test.sh loads it). Exit 77, after the static half, when they
+#          run here: `ld -v` names the source, and ld -kext turns tests/fixtures/kext/hello.o into a
+#          kext with only the load commands 10.9's kxld accepts (tests/kext-load-test.sh loads it).
+#          as, which hands the assembly to a clang, assembles hello.s too where one is at hand:
+#          CCTOOLS_CLANG_AS_EXECUTABLE, or a clang on PATH. Exit 77, after the static half, when they
 #          cannot run here; 77 alone when CCT_STAGE is unset.
 set -eu
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -43,8 +44,15 @@ echo "PASS static: $T"
 "$T/bin/ld" -v > "$w/v" 2>&1 || { echo "the tree's ld does not run on this host -- runtime half skipped"; exit 77; }
 grep -q 'PROJECT:ld64-957.1' "$w/v" || { cat "$w/v"; fail "ld -v names no ld64-957.1"; }
 grep -q 'source available at https://github.com/Mavergreen/cctools' "$w/v" || { cat "$w/v"; fail "ld -v names no source"; }
-"$T/bin/as" -arch x86_64 "$HERE/fixtures/kext/hello.s" -o "$w/hello.o" || fail "as could not assemble the kext fixture"
-"$T/bin/ld" -arch x86_64 -kext -static -no_uuid -macosx_version_min 10.9 "$w/hello.o" -o "$w/hello" \
+did_as=""
+if [ -n "${CCTOOLS_CLANG_AS_EXECUTABLE:-}" ] || command -v clang > /dev/null 2>&1; then
+  "$T/bin/as" -arch x86_64 "$HERE/fixtures/kext/hello.s" -o "$w/as.o" || fail "as could not assemble the kext fixture"
+  "$otool_" -hv "$w/as.o" | grep -q OBJECT || fail "as made no object"
+  did_as="as, "
+else
+  echo "no clang for as to hand the assembly to -- as not checked"
+fi
+"$T/bin/ld" -arch x86_64 -kext -static -no_uuid -macosx_version_min 10.9 "$HERE/fixtures/kext/hello.o" -o "$w/hello" \
   || fail "ld -kext could not link the kext fixture"
 "$otool_" -hv "$w/hello" > "$w/h" || fail "otool -hv"
 grep -q 'KEXTBUNDLE' "$w/h" || { cat "$w/h"; fail "ld -kext did not make an MH_KEXT_BUNDLE"; }
@@ -54,4 +62,4 @@ grep -q 'KEXTBUNDLE' "$w/h" || { cat "$w/h"; fail "ld -kext did not make an MH_K
 [ "$(cat "$w/cmds")" = "LC_DYSYMTAB=1 LC_SEGMENT_64=3 LC_SOURCE_VERSION=1 LC_SYMTAB=1 " ] \
   || fail "the kext's load commands are $(cat "$w/cmds")"
 "$T/bin/nm" -m "$w/hello" | grep -q 'external _kmod_info' || fail "the kext exports no _kmod_info"
-echo "PASS runtime: as, ld -kext, otool, nm"
+echo "PASS runtime: ${did_as}ld -kext, otool, nm"
