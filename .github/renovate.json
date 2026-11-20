@@ -1,0 +1,70 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>Mavergreen/shipyard"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "cctools-port's branch for cctools 1035.1.102 and ld64 957.1, by commit. Apple publishes no newer ld64, so a new commit here is a fix to the port and ships as a repackage.",
+      "managerFilePatterns": [
+        "/^components/cctools-port/version$/"
+      ],
+      "matchStrings": [
+        "^(?<currentValue>\\S+) (?<currentDigest>[0-9a-f]{40})\\s*$"
+      ],
+      "depNameTemplate": "cctools-port",
+      "packageNameTemplate": "https://github.com/tpoechtrager/cctools-port",
+      "datasourceTemplate": "git-refs"
+    },
+    {
+      "customType": "regex",
+      "description": "swift-corelibs-libdispatch, which the Linux build links statically, by release tag and its commit.",
+      "managerFilePatterns": [
+        "/^components/libdispatch/version$/"
+      ],
+      "matchStrings": [
+        "^(?<currentValue>\\S+) (?<currentDigest>[0-9a-f]{40})\\s*$"
+      ],
+      "depNameTemplate": "swift-corelibs-libdispatch",
+      "packageNameTemplate": "swiftlang/swift-corelibs-libdispatch",
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "regex:^swift-(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?-RELEASE$"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^components/clang22/version$/"
+      ],
+      "matchStrings": [
+        "^(?<currentValue>\\S+)\\s*$"
+      ],
+      "depNameTemplate": "Mavergreen/clang-22",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-mavericks\\.(?<build>\\d+)$"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^components/make/version$/"
+      ],
+      "matchStrings": [
+        "^(?<currentValue>\\S+)\\s*$"
+      ],
+      "depNameTemplate": "Mavergreen/make",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-mavericks\\.(?<build>\\d+)$"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Each of these moves a pin Renovate cannot write: GitHub's tarball SHA-256 in components/<name>/sha256, or clang22's Linux archive digest in components/clang22/linux-sha256. Until a pins bot writes them (.superpowers/QUEUE.md), the build fails at the fetch, naming the digest it got; write it on the branch by hand.",
+      "matchDepNames": [
+        "cctools-port",
+        "swift-corelibs-libdispatch",
+        "Mavergreen/clang-22"
+      ],
+      "automerge": false
+    }
+  ]
+}

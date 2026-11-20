@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"></head><body style="font-family:-apple-system,Helvetica,sans-serif;font-size:12px">
+<p>This installs Apple's <b>cctools</b> 1035.1.102 and <b>ld64</b> 957.1 (<code>ld</code>, <code>as</code>,
+<code>lipo</code>, <code>otool</code>, <code>nm</code>, <code>libtool</code>, <code>install_name_tool</code> and the
+rest), built to run on Mac&nbsp;OS&nbsp;X&nbsp;10.9 (Mavericks) and later, Intel and Apple Silicon alike, into
+<code>/usr/local/mavergreen/cctools/</code>. It needs no Command Line Tools.</p>
+<p>Open a new Terminal window: the tools are on your <code>PATH</code>. Your shell searches <code>/usr/bin</code>
+first, so a bare <code>ld</code> still finds Apple's: call <code>/usr/local/mavergreen/cctools/bin/ld</code>, or put
+that directory first.</p>
+<p>A background updater (Sparkle) checks daily for new releases. Built from tpoechtrager's cctools-port of Apple's
+open source, with the changes and recipe at github.com/Mavergreen/cctools, where every release also carries the
+source it was built from. Apple's code is under the Apple Public Source License 2.0, shown next. This is an
+unofficial community build, not affiliated with or supported by Apple.</p>
+</body></html>
