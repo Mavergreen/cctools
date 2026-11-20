@@ -1,0 +1,22 @@
+diff -ru d/cctools/ld64/src/ld/ld.cpp e/cctools/ld64/src/ld/ld.cpp
+--- d/cctools/ld64/src/ld/ld.cpp	2026-11-20 08:15:42.000000000 -0500
++++ e/cctools/ld64/src/ld/ld.cpp	2026-11-20 08:15:42.000000000 -0500
+@@ -20,6 +20,9 @@
+  * limitations under the License.
+  *
+  * @APPLE_LICENSE_HEADER_END@
++ *
++ * Modified 2026-11-20 by Mavergreen (https://github.com/Mavergreen/cctools): __cxa_atexit's
++ * override matches the 11.3 SDK's <cxxabi.h>, which declares it with no exception specification.
+  */
+  
+ // start temp HACK for cross builds
+@@ -1746,6 +1749,8 @@
+ // regular exit() instead of _exit()
+ #ifndef __APPLE__ // ld64-port
+ #define CXA_ATEXIT_THROW throw()
++#elif defined(_LIBCPP_VERSION) && _LIBCPP_VERSION < 13000
++#define CXA_ATEXIT_THROW
+ #else
+ #define CXA_ATEXIT_THROW throw()
+ #endif

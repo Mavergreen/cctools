@@ -39,7 +39,8 @@ clang-22's locked Ubuntu 22.04 container, through `build/build-release.sh`, and 
 - **Changes:** `patches/`, applied in name order by shipyard's `apply_patches.sh`.
   `0001` stops `configure` from searching `/usr/local` and `/usr/pkg` on a native build, so a box's
   own libraries never reach the tools. `0002` makes `ld -v` say where the modified source is, as the
-  APSL asks, in place of the time of the build. `patches/libdispatch/` keeps libdispatch's warnings from
+  APSL asks, in place of the time of the build. `0003` gives ld64's `__cxa_atexit` override the exception
+  specification the 11.3 SDK's `<cxxabi.h>` declares, so the arm64 build compiles. `patches/libdispatch/` keeps libdispatch's warnings from
   being errors: upstream builds with `-Werror`, and clang22 warns where upstream's compiler does not. A changed APSL file says so, with the date, in its
   licence header.
 - **Off:** libtapi (the 10.9 SDK has no `.tbd` stubs to read), LTO (there is no libLTO to load) and
